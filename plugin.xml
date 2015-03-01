@@ -35,4 +35,15 @@
         <header-file src="src/ios/Screenshot.h" />
         <source-file src="src/ios/Screenshot.m" />
     </platform>
+	<!-- wp8 -->
+	<platform name="wp8">
+		<config-file target="config.xml" parent="/*">
+			<feature name="Screenshot">
+				<param name="wp-package" value="Screenshot"/>
+			</feature>
+		</config-file>
+
+		<source-file src="src/wp8/Screenshot.cs" />
+	</platform>
+	
 </plugin>
