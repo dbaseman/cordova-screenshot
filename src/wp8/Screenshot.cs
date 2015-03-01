@@ -10,10 +10,11 @@ using WPCordovaClassLib;
 using WPCordovaClassLib.Cordova;
 using WPCordovaClassLib.Cordova.Commands;
 using WPCordovaClassLib.Cordova.JSON;
+using Microsoft.Phone.Controls;
 
 namespace Cordova.Extension.Commands
 {
-    public class SocialSharing : BaseCommand
+    public class Screenshot : BaseCommand
     {
         public void save(string jsonArgs)
         {
@@ -25,17 +26,22 @@ namespace Cordova.Extension.Commands
 			
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
+                CordovaView content;
                 if (TryGetContentRoot(out content))
                 {
                     var currentScreenImage = new WriteableBitmap((int)content.ActualWidth, (int)content.ActualHeight);
                     currentScreenImage.Render(content, new MatrixTransform());
                     currentScreenImage.Invalidate();
-                    Picture picture = SaveToMediaLibrary(currentScreenImage, fileName, 100);
+                    Picture picture = SaveToMediaLibrary(currentScreenImage, filename, 100);
                     
 					string path = picture.GetPath();
                     MessageBox.Show("Captured image " + path + " Saved Sucessfully", "WP Capture Screen", MessageBoxButton.OK);
 
-                    DispatchCommandResult(new PluginResult(PluginResult.Status.OK));
+                    string res = string.Concat("{",
+                        "filename: ",
+                        path,
+                        "}");
+                    DispatchCommandResult(new PluginResult(PluginResult.Status.OK, res));
                 }
 
                 DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR));
